@@ -1,1 +1,1 @@
-Web: node appoc.js
+web: node appoc.js
