@@ -1,1 +1,1 @@
-Worker : node .
+Worker : node appoc.js
