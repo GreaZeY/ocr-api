@@ -67,8 +67,8 @@ app.post('/upload',async (req, res)=>{
                 .then(({ data: { text } }) => {
                     //console.log(text)
                     return res.send({
-                        image: `http://${hostname}:${port}/img/${filename}`,
-                        path: `http://${hostname}:${port}/img/${filename}`,
+                        image: `http://greazey-ocr-api.herokuapp.com/img/${filename}`,
+                        path: `http://greazey-ocr-api.herokuapp.com/img/${filename}`,
                         text: text
 
                     });
