@@ -4,7 +4,7 @@ const ef = require('express-fileupload')
 const fs = require('fs');
 const Tesseract = require('tesseract.js');
 const hostname = 'localhost'
-const port = 7453
+const port = process.env.port || 7453
 
 var filename = 'ocr_image'
 var app = express()
@@ -92,4 +92,4 @@ app.post('/txt',  async (req, res)=>{
   
 })
 
-app.listen(process.env.port||port)
+app.listen(port,()=>console.log(`listening to http://${hostname}:${port}`))
