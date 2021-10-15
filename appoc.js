@@ -47,40 +47,51 @@ const capturedImage = async (req, res, next) => {
 app.post('/capture', capturedImage)
 
 
-app.post('/upload',async (req, res)=>{
-    if(req.files){
-        //console.log(req.files)
+app.post('/upload', async (req, res) => {
+    if (req.files) {
         var efFile = req.files.file
-         filename = efFile.name
-        await efFile.mv('./storage/images/'+filename, (err)=>{
-            if(err){
-                //console.log(err)
-                res.send(err)
-            } else {
-                 //console.log(filename)
-                // res.send(filename)
-                Tesseract.recognize(
-                    `./storage/images/${filename}`,
-                    'eng',
-                )
+        // console.log(efFile)
+        filename = efFile.name
+        if (efFile.mimetype === 'image/jpg' || efFile.mimetype === 'image/png' || efFile.mimetype === 'image/tiff' || efFile.mimetype === 'image/bmp'||efFile.mimetype === 'image/jpeg') {
 
-                .then(({ data: { text } }) => {
-                    //console.log(text)
-                    return res.send({
-                        image: `http://greazey-ocr-api.herokuapp.com/img/${filename}`,
-                        path: `http://greazey-ocr-api.herokuapp.com/img/${filename}`,
-                        text: text
-
-                    });
-                })
-                .catch((err)=>{
+            await efFile.mv('./storage/images/' + filename, (err) => {
+                if (err) {
                     //console.log(err)
-                })
-            }
-        })
+                    res.send(err)
+                } else {
+                    //console.log(filename)
+                    // res.send(filename)
+                    try {
+                        Tesseract.recognize(
+                            `./storage/images/${filename}`,
+                            'eng',
+                        )
+
+                            .then(({ data: { text } }) => {
+                                //console.log(text)
+                                return res.send({
+                                    image: `http://greazey-ocr-api.herokuapp.com/img/${filename}`,
+                                    path: `http://greazey-ocr-api.herokuapp.com/img/${filename}`,
+                                    text: text
+
+                                });
+                            })
+                    }
+                    catch (err) {
+                        console.error(err)
+                    }
+                }
+            })
+        } else {
+            return res.send({
+                image: `This File type is not Supported`,
+                path: `This File type is not Supported`,
+                text: `This File type is not Supported`
+
+            });
+        }
     }
 })
-
 app.post('/txt',  async (req, res)=>{
     fs.writeFile(`storage/text_files/${filename}.txt`,req.body.txt, (err) => {  
         if (err) throw err;
