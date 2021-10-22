@@ -96,7 +96,7 @@ app.post('/txt',  async (req, res)=>{
     fs.writeFile(`storage/text_files/${filename}.txt`,req.body.txt, (err) => {  
         if (err) throw err;
       })
-        return await res.send({path: `http://greazey-ocr-api.herokuapp.com/dtxt/${filename}.txt` 
+        return await res.send({path: `https://greazey-ocr-api.herokuapp.com/dtxt/${filename}.txt` 
           })
    
       
